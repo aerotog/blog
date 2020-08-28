@@ -1,0 +1,1 @@
+gatsby build --prefix-paths
