@@ -4,7 +4,7 @@ module.exports = {
     title: `The best laid schemes`,
     author: {
       name: `Timothy Guenthner`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      summary: `who lives and works in Austin trying to build useful things.`,
     },
     description: `Musings on the often odd world of professional software engineering.`,
     siteUrl: `https://aerotog.github.io/blog/`
