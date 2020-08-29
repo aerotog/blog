@@ -46,6 +46,18 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         <footer>
           <Bio />
         </footer>
+        <section id="comments">
+          <h2>Comments</h2>
+          <div dangerouslySetInnerHTML={{ __html: 
+            `<script src="https://utteranc.es/client.js"
+              repo="aerotog/blog"
+              issue-term="title"
+              theme="github-light"
+              crossorigin="anonymous"
+              async>
+            </script>`
+          }} />
+        </section>        
       </article>
 
       <nav>

@@ -49,6 +49,7 @@
     "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
   },
   "scripts": {
+    "prebuild": "rm -rf docs && gatsby clean",
     "build": "gatsby build --prefix-paths",
     "postbuild": "mv public docs",
     "develop": "gatsby develop",
