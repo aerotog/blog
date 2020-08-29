@@ -4,6 +4,8 @@ date: "2020-08-28T03:27:34Z"
 description: "TODO"
 ---
 
+https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest-and-when-to-use-them
+
 - REST without HATEOS is not REST
 - REST vs RESTful
 - Martin Fowler levels of REST

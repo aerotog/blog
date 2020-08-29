@@ -6,12 +6,19 @@ description: "TODO"
 
 - List professional experience level with each
 
+
+https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest-and-when-to-use-them
+
+
 - SOAP
 - REST
-- JSON API
+    - HAL
+    - ODATA
+    - JSON API
 - OPEN API (Swagger)
 - ODATA
 - GRAPHQL
+- gRPCS
 - Others?
 
 - Create solution with controllers for each

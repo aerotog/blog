@@ -46,18 +46,6 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         <footer>
           <Bio />
         </footer>
-        <section id="comments">
-          <h2>Comments</h2>
-          <div dangerouslySetInnerHTML={{ __html: 
-            `<script src="https://utteranc.es/client.js"
-              repo="aerotog/blog"
-              issue-term="title"
-              theme="github-light"
-              crossorigin="anonymous"
-              async>
-            </script>`
-          }} />
-        </section>        
       </article>
 
       <nav>
@@ -86,6 +74,18 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
           </li>
         </ul>
       </nav>
+
+      <section id="comments">
+        <h4><a href="">Load comments</a></h4>
+        <div dangerouslySetInnerHTML={{ __html: 
+          `<script async src="https://utteranc.es/client.js"
+            repo="aerotog/blog"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous">
+          </script>`
+        }} />
+      </section>
     </Layout>
   )
 }

@@ -25,3 +25,5 @@ I have been wanting more experience with frontend frameworks so this will work o
 I plan on hosting this blog like my other static pages using [Github Pages](https://pages.github.com/) which is really convenient since I already host my personal repos there. I'm editing this in [VS Code](https://code.visualstudio.com/). (With vim mode, of course!) As much as I love Jetbrains's IDEs, what Microsoft and the VS Code community has done with Atom is rather inspiring.
 
 Perhaps in the future I'll try something more ambitious. Like a [JAMstack](https://jamstack.org/) page hosted on [Netlify](https://www.netlify.com/). I really like the concept of static sites being hosted "serverless" infrastructure hitting API in the backend when needed.
+
+~EOF~
