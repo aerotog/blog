@@ -7,7 +7,10 @@ module.exports = {
       summary: `who lives and works in Austin while trying to build useful things.`,
     },
     description: `Musings on the often odd world of professional software engineering.`,
-    siteUrl: `https://aerotog.github.io/blog/`
+    siteUrl: `https://aerotog.github.io/blog/`,
+    externalLinks: {
+      home: `https://aerotog.github.io/home/`,
+    }
   },
   plugins: [
     {

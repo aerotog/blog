@@ -27,12 +27,15 @@ const Bio = () => {
             name
             summary
           }
+          externalLinks{
+            home
+          }
         }
       }
     }
   `)
 
-  const { author } = data.site.siteMetadata
+  const { author, externalLinks } = data.site.siteMetadata
   return (
     <div
       style={{
@@ -54,7 +57,11 @@ const Bio = () => {
         }}
       />
       <p>
-        Written by <strong>{author.name}</strong> {author.summary}
+        Written by <strong>{author.name}</strong> {author.summary}        
+        {` Feel free to check out `}
+        <a href={`${externalLinks.home}`}>
+          my other projects.
+        </a>
       </p>
     </div>
   )
