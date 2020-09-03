@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[The best laid schemes]]></title><description><![CDATA[Musings on the often odd world of professional software engineering.]]></description><link>https://aerotog.github.io/blog</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 31 Aug 2020 18:56:13 GMT</lastBuildDate><item><title><![CDATA[Adding comments to a Gatsby static blog]]></title><description><![CDATA[Wouldn’t it be nice to allow the community to interact with my blog? Surely it can’t be that difficult! I bet I can get it done in an…]]></description><link>https://aerotog.github.io/blog/comments-in-gatsby/</link><guid isPermaLink="false">https://aerotog.github.io/blog/comments-in-gatsby/</guid><pubDate>Sun, 30 Aug 2020 01:43:33 GMT</pubDate><content:encoded>&lt;p&gt;Wouldn’t it be nice to allow the community to interact with my blog? Surely it can’t be that difficult! I bet I can get it done in an afternoon.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Six hours later…&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Well that took longer than I expected.&lt;/p&gt;
+&lt;p&gt;The comment section should now appear if the user click the “Load comments” hyperlink or if they directly browse to a blog post. Users can authenticate using Github OAuth. Comments are saved in issues on my blog project so no storage other than Github is needed. A bit of a hacky solution, but I love the clever repurposing of Github’s features.&lt;/p&gt;
+&lt;p&gt;So how did I get here?&lt;/p&gt;
+&lt;p&gt;I first considerd my options. I wanted to stick to a “serverless” solution, so hosting my open comment API would be my last resort. Of course I’ll continue to use static site generation via Gatsby.&lt;/p&gt;
+&lt;p&gt;The possible solutions I considered included:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://staticman.net/&quot;&gt;Staticman&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This seems like a comprehensive solution. It enables user generated content on a static site by pushing content to the site’s Github repository by way of Statisman’s private API. I do like the concept, but I feel having commits for every comment is a bit troublesome.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/gitalk/gitalk&quot;&gt;Gitalk&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;It’s a React component that uses your personal Github OAuth application token to post comments as issues to a repo you own. I love the concept of using Github issues as comment threads. However, it has two deal breakers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It requires the “window” browser global. Unfortunately, since Gatsby uses Server Side Rendering, both the “window” and “document” globals are unavailable. Gatsby does provide a workaround for this, but in short it is “ensure the code doesn’t run unless it’s rendered in the browser”. So the code we want to run won’t work.&lt;/li&gt;
+&lt;li&gt;Also, for Gitalk to work, &lt;em&gt;you must provide your Github OAuth Client Secret to the user’s client&lt;/em&gt;. This could easily be abused by 3rd parties, so it’s probably best not to do this.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/utterance/utterances&quot;&gt;Utterances&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Like Gitalk, Utterances uses Github issues to store comments. The primary difference is it has its own Github app that hosts the API used for posting comments so you don’t need to provide your own OAuth key. The configuration is very simple and as long as your repo allows public issues, it seems the easiest to implement with the fewest risks.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After trying to use Gitalk and realizing 1) it won’t work with SSR and 2) it requires a secret I don’t want to reveal, I quickly moved on to Utterances.&lt;/p&gt;
+&lt;p&gt;Utterances is simple to implement. It walks you through configuration and &lt;a href=&quot;https://utteranc.es/&quot;&gt;generates an HTML script block&lt;/a&gt; you can plug into your web page.&lt;/p&gt;
+&lt;p&gt;With the smell of victory in the air, I added it to my blog template:
+&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;html&quot;&gt;&lt;pre class=&quot;language-html&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;			&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;footer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+				&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;Bio&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;/&gt;&lt;/span&gt;&lt;/span&gt;
+			&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;footer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+			&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;script&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;https://utteranc.es/client.js&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+				&lt;span class=&quot;token attr-name&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;aerotog/blog&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+				&lt;span class=&quot;token attr-name&quot;&gt;issue-term&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;title&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+				&lt;span class=&quot;token attr-name&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;github-light&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+				&lt;span class=&quot;token attr-name&quot;&gt;crossorigin&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;anonymous&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token script&quot;&gt;&lt;span class=&quot;token language-javascript&quot;&gt;
+			&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;script&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; 
+		&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;section&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;        
+	&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;article&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It didn’t work.&lt;/p&gt;
+&lt;p&gt;A quick google search later, I &lt;a href=&quot;https://dev.to/creativcoder/how-to-add-comment-support-on-your-gatsby-blog-using-github-utterances-423n&quot;&gt;found a most relevant blog post&lt;/a&gt;. This walkthrough uses the React “useEffect” hook to populate a “Comment” component consisting of a single “comments” class div. Pretty straight forward.&lt;/p&gt;
+&lt;p&gt;After some quick modifications and serving the site with “gatsby develop”, I had working comments! Or so I thought.&lt;/p&gt;
+&lt;p&gt;Yes, they worked with “gatsby develop”. But as soon as I ran “gatsby build” and tried accessing my static site, the comment element did not appear.&lt;/p&gt;
+&lt;p&gt;After a bit more research, I found the problem. Because Gatsby uses Server Side Rendering for its static site generation, client side triggers like componentDidMount() and hooks like useEffect() &lt;a href=&quot;https://blog.logrocket.com/fixing-gatsbys-rehydration-issue/&quot;&gt;&lt;em&gt;do not run&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I took a moment to re-evaluate what I’ve tried. The useEffect() solution was not compatible with my page generation strategy. But I never fully investigated why adding the JS to the blog template didn’t work.&lt;/p&gt;
+&lt;p&gt;My understanding of React component templating lead me to believe I could add HTML blocks at will, like the script block I wanted. To better deduce why it wasn’t working, I replaced the JS with a simple console statement. But even a simple &lt;code class=&quot;language-text&quot;&gt;console.log(&amp;quot;Hello world&amp;quot;)&lt;/code&gt; was failing to execute.&lt;/p&gt;
+&lt;p&gt;Pursuing methods for adding script blocks to React components lead me to suggestions for Gatsby which included creating a &lt;code class=&quot;language-text&quot;&gt;gatsby-ssr.js&lt;/code&gt; file or modifying the &lt;code class=&quot;language-text&quot;&gt;default-html.js&lt;/code&gt;. But eventually I found what I really wanted: &lt;a href=&quot;https://reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml&quot;&gt;dangerouslySetInnerHTML&lt;/a&gt;. This ominous method has pitfalls and risks with rendering unsanitized HTML in your page (you shouldn’t use it without considering the risks) but &lt;em&gt;this&lt;/em&gt; is how you can render HTML at will:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;html&quot;&gt;&lt;pre class=&quot;language-html&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;      &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;section&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;comments&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+        &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;h4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;a&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;Load comments&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;a&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;h4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+        &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;dangerouslySetInnerHTML&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;{{&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;__html:&lt;/span&gt;&lt;/span&gt; 
+          &lt;span class=&quot;token attr-name&quot;&gt;`&amp;lt;script&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;https://utteranc.es/client.js&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;token attr-name&quot;&gt;repo&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;aerotog/blog&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;token attr-name&quot;&gt;issue-term&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;title&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;token attr-name&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;github-light&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;token attr-name&quot;&gt;crossorigin&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;anonymous&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token script&quot;&gt;&lt;span class=&quot;token language-javascript&quot;&gt;
+          &lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;script&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;`
+        }} /&gt;
+      &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;section&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Dangerous HTML in hand, I once again had working comments. This time in my static site!&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/blog/static/606dc23fc719c3bdb095c11eedd6726d/c7dcc/first.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 85.13513513513513%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAB2UlEQVQ4y61UPY/UMBDNT6VCoqOgo4CK/wAIUV0BHRINEicQBQ0IitPpYA+tFvZQllzW+XRsx04eM5PN3nLaQ+HDq6fxjL0z45mXiVKloPIC1loYY2CaBrXW0ARLut7sG7IzzMY26gzW2c4runP3Hu4/eAil1pjP51gul/g8m+F0doovhBkhSRKoLEOeZ8hIKk6CwPssG/ZFUQwOvy1jrFUGRxnWdSWRmk3EMbupq+97RFMvToFk2HUduq7/b063GXrv4dpW5GWM0a8KhF2HgTL0oaP6aRRlRV3j2nGnG7Hxnl8x/G//M3dXdPvmdTw5eATbAWdJjpWq8UPpLc5zg9L0+2F7rNY10sIiTisU2iF68fwZPp2cwPoeeUmcMn6L2rQi+ewqaOvRuCB3bRsuasgkbp3Dvy2q4ds3hzg+PgJXw7Ve0PoguKzvg5y3g/SBMrx14xqeHjwGlVDYXtYNkjQTqY2bjJpgnUfEXeUut0QPa51Ak431EDqJGibAb7DDwyAO+JBp8id1G39MwWjLqb/8Sn65R19cNBrLqhYiG2NlfBkZZxYNdb/b42h8xSL/ipeLVzhcvMZZ8f3CocxAmm2WqMOTZpBW5uTvHMbVCu/iD3gff8S5TvETPKQp0HdymxMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;First!&quot;
+        title=&quot;First!&quot;
+        src=&quot;/blog/static/606dc23fc719c3bdb095c11eedd6726d/fcda8/first.png&quot;
+        srcset=&quot;/blog/static/606dc23fc719c3bdb095c11eedd6726d/12f09/first.png 148w,
+/blog/static/606dc23fc719c3bdb095c11eedd6726d/e4a3f/first.png 295w,
+/blog/static/606dc23fc719c3bdb095c11eedd6726d/fcda8/first.png 590w,
+/blog/static/606dc23fc719c3bdb095c11eedd6726d/c7dcc/first.png 641w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;There was one final problem. The comments would only load when I directly browsed to a blog post or refreshed the page. If I was navigating the site using its links, the blog post content would change, but the comments would never load.&lt;/p&gt;
+&lt;p&gt;After some thinking, I realized this was caused by the fundamental nature of React apps. One of the &lt;em&gt;key features&lt;/em&gt; of React is that it can dynamically change content on a page without reloading/navigating away. This makes React apps incredibly responsive, but it has the side effect of breaking my comments!&lt;/p&gt;
+&lt;p&gt;I considered ways around this. I thought about force reloading the page, but I didn’t like taking control away from the user. Especially for people like me who don’t often read comments, sacrificing usability for an unused/unwanted feature was not appealing.&lt;/p&gt;
+&lt;p&gt;So I gave control to the user. As seen at the bottom of the page, I added a “Load comments” link that refreshes the page which in turn makes the comments render. It’s not ideal, but I think it’s an acceptable compromise. If someone is really wanting to read/write comments, hopefully a single click isn’t enough to deter them.&lt;/p&gt;
+&lt;p&gt;Long live the comments! I’m sure this feature will endure the tests of time! Or at least until the &lt;a href=&quot;https://utteranc.es/&quot;&gt;Utterances&lt;/a&gt; API is shut down.&lt;/p&gt;
+&lt;p&gt;~EOF~&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Hello World]]></title><description><![CDATA[Two of the best things about writing software are: Being able to flex your creativity Not having to flex your creativity The “Hello World…]]></description><link>https://aerotog.github.io/blog/hello-world/</link><guid isPermaLink="false">https://aerotog.github.io/blog/hello-world/</guid><pubDate>Fri, 28 Aug 2020 03:27:34 GMT</pubDate><content:encoded>&lt;p&gt;Two of the best things about writing software are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Being able to flex your creativity&lt;/li&gt;
+&lt;li&gt;Not having to flex your creativity&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The “Hello World” process is so ingrained in the software world. It’s easy to be stricken by decision paralysis in the modern age with its vast sea of options. Sometimes it’s nice being able to shut off your frontal cortex and go with the obvious.&lt;/p&gt;
+&lt;p&gt;The template for this blog even had a Hello World entry, so who am I to challenge tradition!&lt;/p&gt;
+&lt;p&gt;This blog is a static site built using &lt;a href=&quot;https://www.gatsbyjs.com/&quot;&gt;GatsbyJS&lt;/a&gt;. So far it hasn’t been too painful to work with, but for a static blog, it does seem a bit much. It uses React components which are relatively straight forward (if you know React), but it populates data at build time from a &lt;em&gt;GraphQL API&lt;/em&gt;. &lt;/p&gt;
+&lt;p&gt;For people used to working in the frontend, maybe this is par for the course. But from my backend background, it seems a little crazy that you need an entire API just to share data across your source code’s components.&lt;/p&gt;
+&lt;p&gt;Oh, don’t forget the 1,643 &lt;del&gt;npm&lt;/del&gt; yarn packages sitting at 405MB on disk. Did I mention this is a static website meant to host a blog? Yes? Okay.&lt;/p&gt;
+&lt;p&gt;C’est la vie.&lt;/p&gt;
+&lt;p&gt;I have been wanting more experience with frontend frameworks so this will work out, I think.&lt;/p&gt;
+&lt;p&gt;I plan on hosting this blog like my other static pages using &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt; which is really convenient since I already host my personal repos there. I’m editing this in &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;VS Code&lt;/a&gt;. (With vim mode, of course!) As much as I love Jetbrains’s IDEs, what Microsoft and the VS Code community has done with Atom is rather inspiring.&lt;/p&gt;
+&lt;p&gt;Perhaps in the future I’ll try something more ambitious. Like a &lt;a href=&quot;https://jamstack.org/&quot;&gt;JAMstack&lt;/a&gt; page hosted on &lt;a href=&quot;https://www.netlify.com/&quot;&gt;Netlify&lt;/a&gt;. I really like the concept of static sites being hosted “serverless” infrastructure hitting API in the backend when needed.&lt;/p&gt;
+&lt;p&gt;~EOF~&lt;/p&gt;</content:encoded></item></channel></rss>
