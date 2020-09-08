@@ -1,6 +1,6 @@
 ---
 title: "Book Review from the Archives: Clean Series"
-date: "2020-08-28T03:27:34Z"
+date: "2020-09-08T02:40:21Z"
 description: "Keep it clean"
 ---
 
@@ -23,7 +23,7 @@ description: "Keep it clean"
   - [Hexagonal architecture](#hexagonal-architecture)
 - [Conclusion](#conclusion)
 # Introduction
-While I am currently reading a few different books about software, I have a number of books I've read about which I want to record my thoughts. This post covers a trio of books that all share the same "Clean" prefix: _Clean Code_, _Clean Coder_, and _Clean Architecture_.
+While I am currently reading a few different books, there are a number of books I've already completed for which I'd like to record my thoughts. This post covers a series of books that share the same "Clean" prefix: _Clean Code_, _Clean Coder_, and _Clean Architecture_.
 
 I have a fondness for the _Clean_ series of books by Robert "Uncle Bob" Martin. _Clean Code_ was one of the first books on professional software development recommended to me and I found it to be full of helpful guidelines and code examples. It was very useful as someone new to the industry, especially with a non-computer science background. (My degree being in Aerospace)
 
@@ -155,15 +155,17 @@ By allowing the business/domain layer to control or own the interfaces it uses (
 The diagrams describing the control flow has greatly helped me understand how Hexagonal architecture can be implemented and I hope to put it to use in the near future.
 
 # Conclusion
-What did we learn? That I should avoid writing blog posts this long/dense. Oh, sorry, you meant the books.
+What did we learn?
+
+That I should avoid writing blog posts that are this long/dense. Oh, sorry, you meant the books.
 
 What did we learn _about the books_?
 
-In the _Clean_ series of books, Robert Martin does a great job introducing a broad range of fundamental topics to fresh eyes. He may not go into much detail for each topic, but the easy reads make it possible to get through all the material without getting fatigued.
+In the _Clean_ series of books, Robert Martin does a great job introducing a broad range of fundamental topics to fresh eyes. He may not go into much detail for each topic, but the material being easy to read makes it possible to get through all the material without getting fatigued.
 
-_Clean Code_ presents a variety of code examples on how to avoid common pitfalls new developers often fall for. Some of these ideas can be abused so they must be thoughtfully applied rather than followed dogmatically.
+_Clean Code_ presents a variety of code examples on how to avoid common pitfalls for new developers. Some of these ideas can be abused so they must be thoughtfully applied rather than followed dogmatically.
 
-_Clean Coder_ does a good job at focusing on the softer skills of the day to day responsibilities of a professional software engineer. It helps provided context and understanding of the needs outside the immediate surroundings of the ~~lowly code monkey~~, ahem, I mean software engineer.
+_Clean Coder_ does a good job focusing on the soft skills a professional software engineer needs. It helps provided context and understanding for the needs outside the immediate surroundings of the ~~lowly code monkey~~, ahem, I mean software engineer.
 
 _Clean Architecture_ provides a several methods of arriving at good system and code architecture. Some of these methods seem much easier to understand/quantify and implement than others.
 
