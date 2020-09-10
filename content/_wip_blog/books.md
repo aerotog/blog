@@ -5,10 +5,15 @@ description: "TODO"
 ---
 
 - Pragmatic Programmer
+  - It's like they're reading my mind...
 - Art of Programming
-- Clean series (Code, Coder, Architecture)
+  - Good range of problem difficulty
+  - Great academic reference with proofs
 - Mythical Man Month
+  - Adding more people to a late project usually makes it later
 - Phoenix Project
+  - Love the context of a fictional setting
+  - "Brent" https://www.devopsgroup.com/blog/devops-how-to-find-the-constraints-in-your-it-services-part-i/#:~:text=Well%2C%20in%20the%20Phoenix%20Project,un%2Ddocumented%20knowledge%20in%20head.
 - Design Patterns - Gang of four
     - Some programmers do patterns but don't name them
     - Reinventing the strategy pattern
@@ -27,4 +32,3 @@ description: "TODO"
     - Entity vs _
 - Continuous Delivery
 - Algorithms
-- 
