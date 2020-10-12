@@ -20,7 +20,7 @@ Do you have an answer in mind? You most likely know it's an HTTP based web API. 
 
 Quite often people incorrectly associate REST with JSON since the vast majority of REST API use JSON, but this is definitely not a prerequisite.
 
-And just as often, many people forget, or intentionally omit, the final piece that the REST inventor claims is _fundamental to REST_. This missing piece has the difficult to pronounce acronym "HATEOAS" ("hay-dee-us"?) which stands for "Hypermedia as the Engine of Application State".
+And just as often, many people forget, or intentionally omit, the final piece that the REST inventor claims is _fundamental to REST_. This missing piece has the difficult to pronounce acronym "HATEOAS" ("hay-dee-us"? "hate-oh-es"?) which stands for "Hypermedia as the Engine of Application State".
 
 Several years back, when I was first exposed to REST, I squarely in the former camp. I implemented my "REST" API as an HTTP API using JSON and meaningful HTTP verbs. It was relatively simple to understand and simple to use. Then one day a coworker introduced the concept of HATEOAS and it was like the ground had dropped beneath my feet. Suddenly my simple pure data types had _links_ in them and what was worse is that I was being forced to make my client _discover_ server endpoints by following these links! 
 
@@ -69,6 +69,6 @@ The current implementations only include [Open API](http://spec.openapis.org/oas
 
 At work, I've started being more specific about the type of API I am implementing. I've stopped calling my API "REST" or "RESTful" if they don't contain hypermedia. I've opted to use "Open API" instead as we make liberal use of Open API documentation.
 
-In the future, I hope to explore the use of gRPC and GraphQL as they have gained quite a following and provide more powerful options when designing API. It's always good to have more tools in the toolbox. It's a shame to only have a hammer when some of your problems aren't nails.
+In the future, I hope to explore the use of gRPC and GraphQL as they have gained quite a following and provide more powerful options when designing API. It's always good to have more tools in the toolbox. It's a shame when you only have a hammer and some of your problems aren't nails.
 
 ~EOF~

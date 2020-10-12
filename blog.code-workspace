@@ -4,5 +4,14 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"Autodesk",
+			"EEPROM",
+			"LEDs",
+			"Tinkercad",
+			"microcontroller",
+			"microcontroller's"
+		]
+	}
 }
