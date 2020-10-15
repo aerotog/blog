@@ -16,3 +16,9 @@ ESP8622:
 - As a web server, need to be able to serve larger files. Can hard code in Arduino sketch, but not pretty.
   - Instead use LittleFS (SPIFFS is deprecated) to store and access files on flash memory
 - Plan to add web interface for controlling lights, will log to web server with circular buffer for n last logs. Web socket real time??
+- OTA UPDATES!! AMAZING!! https://randomnerdtutorials.com/esp8266-ota-updates-with-arduino-ide-over-the-air/
+
+D1 Mini is more compact, uses less compatible USB-serial chip 
+- D1 mini: CH340G UART chip
+- NodeMCU - UART chip. V.2 uses the CP2202/2402 (better driver support)
+- 
