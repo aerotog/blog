@@ -1,6 +1,6 @@
 ---
-title: Learning Machine Learning
-date: "2020-10-14T23:17:27Z"
+title: "Learning Machine Learning"
+date: "2020-10-13T23:17:27Z"
 description: "It's tensors all the way down"
 ---
 
